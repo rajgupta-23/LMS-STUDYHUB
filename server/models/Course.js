@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const courseSchema = new mongoose.Schema(
   {
     title: {
@@ -33,8 +32,6 @@ const courseSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-
-    // New Fields
     level: {
       type: String,
       enum: ["Beginner", "Intermediate", "Advanced"],
