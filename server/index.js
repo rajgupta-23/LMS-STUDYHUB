@@ -1,31 +1,318 @@
+// server.js
+
 require("dotenv").config();
+
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
+
 const connectDB = require("./config/db");
+
+
+// Routes
 
 const authRoutes = require("./routes/authRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const enrollmentRoutes = require("./routes/enrollmentRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
+const userRoutes = require("./routes/userRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
+const certificateRoutes = require("./routes/certificateRoutes");
+const lessonRoutes = require("./routes/lessonRoutes");
+const aboutRoutes = require("./routes/aboutRoutes");
+const statsRoutes = require("./routes/statsRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
+
 
 const app = express();
 
-connectDB();
 
-app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
-app.use(express.json());
-
-app.get("/", (req, res) => res.json({ message: "StudyHub API is running" }));
-
-app.use("/api/auth", authRoutes);
-app.use("/api/courses", courseRoutes);
-app.use("/api/enrollments", enrollmentRoutes);
-
-app.use((req, res) => res.status(404).json({ message: "Route not found" }));
-
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Server error" });
-});
+// Port
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`StudyHub server running on port ${PORT}`));
+
+
+
+
+
+// Database Connection
+
+connectDB(process.env.MONGO_URI);
+
+
+
+
+
+
+
+
+// Middlewares
+
+
+app.use(
+
+  cors({
+
+    origin:
+      process.env.CLIENT_URL ||
+      "http://localhost:5174",
+
+    credentials: true
+
+  })
+
+);
+
+
+
+app.use(
+  express.json()
+);
+
+
+
+
+
+// ===============================
+// Static Files (Video/Image)
+// ===============================
+
+
+app.use(
+
+  "/uploads",
+
+  express.static(
+
+    path.join(
+      __dirname,
+      "uploads"
+    )
+
+  )
+
+);
+
+
+
+
+
+
+
+// Test API
+
+
+app.get("/", (req, res) => {
+
+
+  res.json({
+
+    success: true,
+
+    message:
+      "StudyHub API Running"
+
+  });
+
+
+});
+
+
+
+
+
+
+
+
+
+// ===============================
+// API Routes
+// ===============================
+
+
+app.use(
+
+  "/api/auth",
+
+  authRoutes
+
+);
+
+
+
+app.use(
+
+  "/api/courses",
+
+  courseRoutes
+
+);
+
+
+
+app.use(
+
+  "/api/enrollments",
+
+  enrollmentRoutes
+
+);
+
+
+
+app.use(
+
+  "/api/payment",
+
+  paymentRoutes
+
+);
+
+
+
+app.use(
+
+  "/api/users",
+
+  userRoutes
+
+);
+app.use("/api/stats", statsRoutes);
+app.use("/api/categories", categoryRoutes);
+
+
+
+app.use(
+
+  "/api/reviews",
+
+  reviewRoutes
+
+);
+
+
+
+app.use(
+
+  "/api/certificates",
+
+  certificateRoutes
+
+);
+
+
+
+app.use(
+
+  "/api/lessons",
+
+  lessonRoutes
+
+);
+
+
+
+app.use(
+
+  "/api/about",
+
+  aboutRoutes
+
+);
+
+
+
+
+
+
+
+
+
+// ===============================
+// 404 Handler
+// ===============================
+
+
+app.use(
+
+  (req, res) => {
+
+
+    res.status(404).json({
+
+      success: false,
+
+      message:
+        "Route not found",
+
+      url:
+        req.originalUrl
+
+    });
+
+
+  }
+
+);
+
+
+
+
+
+
+
+
+// ===============================
+// Error Handler
+// ===============================
+
+
+app.use(
+
+  (err, req, res, next) => {
+
+
+    console.error(
+      err.stack
+    );
+
+
+    res.status(500).json({
+
+      success: false,
+
+      message:
+        "Server Error"
+
+    });
+
+
+  }
+
+);
+
+
+
+
+
+
+
+
+// Server Start
+
+
+app.listen(
+
+  PORT,
+
+  () => {
+
+
+    console.log(
+      `StudyHub server running on port ${PORT}`
+    );
+
+
+  }
+
+);

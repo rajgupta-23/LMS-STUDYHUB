@@ -1,0 +1,44 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 16px 40px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    gap: 40px;
+}
+
+.brand {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #2563eb;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.nav-links a,
+.btn-link {
+    text-decoration: none;
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-outline {
+    padding: 8px 18px;
+    border: 2px solid #2563eb;
+    border-radius: 8px;
+    color: #2563eb;
+}
+
+.btn-outline:hover {
+    background: #2563eb;
+    color: #fff;
+}
