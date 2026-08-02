@@ -1,16 +1,10 @@
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-
-// Upload folders
 const videoUploadPath = path.join(__dirname, "../uploads/videos");
 const avatarUploadPath = path.join(__dirname, "../uploads/avatars");
-
 fs.mkdirSync(videoUploadPath, { recursive: true });
 fs.mkdirSync(avatarUploadPath, { recursive: true });
-
-// ================= VIDEO STORAGE =================
-
 const videoStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, videoUploadPath);
@@ -25,9 +19,6 @@ const videoStorage = multer.diskStorage({
         );
     },
 });
-
-// ================= AVATAR STORAGE =================
-
 const avatarStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, avatarUploadPath);
@@ -42,9 +33,6 @@ const avatarStorage = multer.diskStorage({
         );
     },
 });
-
-// ================= VIDEO FILTER =================
-
 const videoFilter = (req, file, cb) => {
     const allowedTypes = [
         "video/mp4",
@@ -60,9 +48,6 @@ const videoFilter = (req, file, cb) => {
         cb(new Error("Only video files are allowed"), false);
     }
 };
-
-// ================= IMAGE FILTER =================
-
 const imageFilter = (req, file, cb) => {
     const allowedTypes = [
         "image/png",
@@ -77,9 +62,6 @@ const imageFilter = (req, file, cb) => {
         cb(new Error("Only image files are allowed"), false);
     }
 };
-
-// ================= VIDEO UPLOAD =================
-
 const upload = multer({
     storage: videoStorage,
     fileFilter: videoFilter,
@@ -87,9 +69,6 @@ const upload = multer({
         fileSize: 500 * 1024 * 1024,
     },
 });
-
-// ================= AVATAR UPLOAD =================
-
 const avatarUpload = multer({
     storage: avatarStorage,
     fileFilter: imageFilter,
@@ -97,7 +76,6 @@ const avatarUpload = multer({
         fileSize: 2 * 1024 * 1024,
     },
 });
-
 module.exports = {
     upload,
     avatarUpload,
