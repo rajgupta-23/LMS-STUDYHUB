@@ -46,12 +46,9 @@ exports.getCourse = async (req, res) => {
         message: "Course not found",
       });
     }
-
     const lessons = await Lesson.find({
       course: course._id,
     }).sort({ order: 1 });
-
-    // Related Courses
     const relatedCourses = await Course.find({
       category: course.category,
       _id: { $ne: course._id },
@@ -109,27 +106,21 @@ exports.createCourse = async (req, res) => {
     });
   }
 };
-
 exports.updateCourse = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
-
     if (!course) {
       return res.status(404).json({
         message: "Course not found",
       });
     }
-
     if (String(course.instructor) !== String(req.user._id)) {
       return res.status(403).json({
         message: "Not your course",
       });
     }
-
     Object.assign(course, req.body);
-
     await course.save();
-
     res.json(course);
   } catch (err) {
     res.status(500).json({
@@ -140,29 +131,23 @@ exports.updateCourse = async (req, res) => {
 exports.deleteCourse = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
-
     if (!course) {
       return res.status(404).json({
         message: "Course not found",
       });
     }
-
     if (String(course.instructor) !== String(req.user._id)) {
       return res.status(403).json({
         message: "Not your course",
       });
     }
-
     await Lesson.deleteMany({
       course: course._id,
     });
-
     await Enrollment.deleteMany({
       course: course._id,
     });
-
     await course.deleteOne();
-
     res.json({
       message: "Course deleted successfully",
     });
@@ -172,8 +157,6 @@ exports.deleteCourse = async (req, res) => {
     });
   }
 };
-
-
 exports.myTaughtCourses = async (req, res) => {
   try {
     const courses = await Course.find({
@@ -187,14 +170,12 @@ exports.myTaughtCourses = async (req, res) => {
         const lessonCount = await Lesson.countDocuments({
           course: course._id,
         });
-
         return {
           ...course.toObject(),
           lessons: lessonCount,
         };
       })
     );
-
     res.json(result);
   } catch (err) {
     res.status(500).json({
@@ -202,27 +183,17 @@ exports.myTaughtCourses = async (req, res) => {
     });
   }
 };
-
 exports.getCategories = async (req, res) => {
-
   try {
-
     const categories = await Course.distinct("category");
-
-
     res.json({
       success: true,
       categories
     });
-
-
   }
   catch (error) {
-
     res.status(500).json({
       message: error.message
     });
-
   }
-
 };
