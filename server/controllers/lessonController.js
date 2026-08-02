@@ -3,7 +3,6 @@ const Lesson = require("../models/Lesson");
 const fs = require("fs");
 const path = require("path");
 
-// Get all lessons of course
 exports.getLessonsByCourse = async (req, res) => {
     try {
         const lessons = await Lesson.find({
@@ -21,7 +20,7 @@ exports.getLessonsByCourse = async (req, res) => {
         });
     }
 };
-// Add Lesson
+
 exports.addLesson = async (req, res) => {
     try {
         const course = await Course.findById(
@@ -65,7 +64,7 @@ exports.addLesson = async (req, res) => {
         });
     }
 };
-// Update Lesson
+
 exports.updateLesson = async (req, res) => {
     try {
 
@@ -78,8 +77,6 @@ exports.updateLesson = async (req, res) => {
                 message: "Lesson not found"
             });
         }
-
-        // instructor check
         if (
             String(lesson.course.instructor) !==
             String(req.user._id)
@@ -135,7 +132,7 @@ exports.deleteLesson = async (req, res) => {
                 message: "Lesson not found"
             });
         }
-        // instructor check
+    
         if (
             String(lesson.course.instructor) !==
             String(req.user._id)
@@ -170,7 +167,7 @@ exports.deleteLesson = async (req, res) => {
         });
     }
 };
-// Get Single Lesson
+
 exports.getLesson = async (req, res) => {
     try {
         const lesson = await Lesson.findById(
