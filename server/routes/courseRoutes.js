@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const {
   getCourses,
   getCourse,
@@ -31,18 +30,7 @@ router.post(
   requireRole("instructor"),
   createCourse
 );
-
-router.put(
-  "/:id",
-  protect,
-  requireRole("instructor"),
-  updateCourse
-);
-router.delete(
-  "/:id",
-  protect,
-  requireRole("instructor"),
-  deleteCourse
-);
+router.put("/:id", protect,requireRole("instructor"),updateCourse);
+router.delete("/:id",  protect,requireRole("instructor"),deleteCourse);
 
 module.exports = router;
